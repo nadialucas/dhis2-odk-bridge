@@ -10,8 +10,8 @@ def get(url):
 
 aggregate_url = "https://cceilaosform.appspot.com/odktables/tables/tables/"
 
-def put(payload):
-	return requests.put(aggregate_url, headers = headers, data = payload)
+def put(url, payload):
+	return requests.put(aggregate_url+str(url), headers = headers, data = payload)
 
 dataSet_url = "dataSets"
 
@@ -29,7 +29,6 @@ for i in range(len(dataSets)):
 
 tableDict = {}
 for i in idList:
-	idList = []
 	dataElement_url = "dataSets/"+str(i)
 	dataElementApi = get(dataElement_url)
 	json2_str = dataElementApi.text
@@ -65,7 +64,7 @@ for i in idList:
 
 for i in tableDict.keys():
 	pay = json.dumps(tableDict[i])
-	r = put(pay)
+	r = put(i, pay)
 
 
 
