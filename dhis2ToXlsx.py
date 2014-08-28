@@ -38,6 +38,7 @@ for i in range(len(dataSets)):
 
 elementLists = []
 administrationLists = []
+#create an elementList and an administrationList for each dataSet
 for i in idList:
     dataElementList = []
     administrationElements = [i]
@@ -134,6 +135,7 @@ def xlsxCreator(elementList, adminList):
     #worksheet1.write(1,6,'In order to switch languages to English, press the button labelled'+str(adminList[1])+'in the top left of the survey form.  Then select Language (the first button) and switch to English.'+translations_json_data['In order to switch languages to English, press the button labelled']+str(adminList[1])+translations_json_data['in the top left of the survey form.  Then select Language (the first button) and switch to English.']
     worksheet1.write(2,0,'date')
     worksheet1.write(2,2,'date')
+    #write in the correct time widget to the xlsx form
     if adminList[2]=='Monthly':
         worksheet1.write(2,3,'What month is this data entry for?')
         #uncomment to enable Lao version of form
@@ -181,7 +183,7 @@ def xlsxCreator(elementList, adminList):
         #worksheet1.write(6,6,translations_json_data['Select Equipment:'])
         worksheet1.write(6,4,"choice_item.facility===data('facility')")
 
-
+    #create options for those forms that have select_one questions
     optionDict = {}
     if adminList[0] in cceiFormIds:
         for i in range(len(elementList)):
@@ -261,11 +263,13 @@ def xlsxCreator(elementList, adminList):
             json5_str = orgUnit1.text
             json5_data = json.loads(json5_str)
             orgUnit1Parent = json5_data['parent']
+            #this checks to see if the parent is Lao PDR or not
             if orgUnit1Parent['id']!='IWp9dQGM0bS':
                 if orgUnit1Parent['id'] not in orgUnitParentList:
                     orgUnitParentList.append(orgUnit1Parent['id'])
                     j.append(orgUnit1Parent['id'])
                     j.append(orgUnit1Parent['name'])
+                #if the parent has already been fetched then the parent is simply named "repeat" but the id is still the parent id
                 else:
                     j.append(orgUnit2Parent['id'])
                     j.append('repeat')
@@ -390,6 +394,7 @@ def xlsxCreator(elementList, adminList):
             worksheet3.write(count,2,t[1])
             worksheet3.write(count,5,t[2])
 
+    #basically the same as above but with a provision for the extra level of equipment list
     else:
         orgUnitList=[]
         idVariable = adminList[0]
@@ -523,7 +528,7 @@ def xlsxCreator(elementList, adminList):
 
 
 
-
+#this calls the function xlsxcreator for all datasets in DHIS2 Laos instance
 for m in range(len(elementLists)):
     elList = elementLists[m]
     adList = administrationLists[m]
